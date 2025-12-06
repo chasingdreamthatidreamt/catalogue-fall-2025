@@ -3,7 +3,7 @@ services:
     build: .
     image: php:8.4-apache
     ports:
-      - "0:80"
+      - "8080:80"
     volumes:
       - ./:/var/www
       - ./public.conf:/etc/apache2/sites-available/000-default.conf
@@ -16,7 +16,7 @@ services:
   mysql:
     image: mysql:8.0
     ports:
-      - "0:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: studentpass
       MYSQL_DATABASE: dmit2025
@@ -28,9 +28,11 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "0:80"
+      - "8081:80"
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: studentpass
     depends_on:
       - mysql
+volumes:
+  db_data: {}   
