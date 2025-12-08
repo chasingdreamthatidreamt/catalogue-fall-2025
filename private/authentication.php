@@ -5,16 +5,17 @@ session_start();
 require_once __DIR__ . '/connect.php';
 $connection = db_connect();
 
-function authenticate($username, $password) {
+function authenticate($username, $password)
+{
     global $connection;
 
     $statement = $connection->prepare(
         "SELECT `id`, `password_hash`
-         FROM `group_catalogue_admin`
+         FROM `catalogue_admin`
          WHERE `username` = ?;"
     );
 
-     if (!$statement) {
+    if (!$statement) {
         die("Prepare failed: " . $connection->error);
     }
 
@@ -30,8 +31,8 @@ function authenticate($username, $password) {
 
             session_regenerate_id(true);
 
-            $_SESSION['user_id']           = $id;
-            $_SESSION['username']          = $username;
+            $_SESSION['user_id'] = $id;
+            $_SESSION['username'] = $username;
             $_SESSION['last_regeneration'] = time();
 
             return true;
@@ -41,18 +42,21 @@ function authenticate($username, $password) {
     return false;
 }
 
-function is_logged_in() {
+function is_logged_in()
+{
     return isset($_SESSION['user_id']);
 }
 
-function require_login() {
+function require_login()
+{
     if (!is_logged_in()) {
         header("Location: login.php");
         exit();
     }
 }
 
-function logout() {
+function logout()
+{
     session_unset();
     session_destroy();
     header("Location: index.php");
