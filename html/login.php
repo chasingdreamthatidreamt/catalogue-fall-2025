@@ -2,6 +2,7 @@
 
 require_once '../private/authentication.php';
 
+// If the user is already logged in, don't let them see the login page.
 if (is_logged_in()) {
     header("Location: admin.php");
     exit();
@@ -10,49 +11,49 @@ if (is_logged_in()) {
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $username = trim($_POST['username'] ?? "");
+    $password = $_POST['password'] ?? "";
 
-    if ($username === '' || $password === '') {
-        $error = "Please enter both a username and password.";
+    if ($username === "" || $password === "") {
+        $error = "Please enter both username and password.";
+    } elseif (authenticate($username, $password)) {
+        // Login successful → send them to admin area.
+        header("Location: admin.php");
+        exit();
     } else {
-
-        if (authenticate($username, $password)) {
-            header("Location: admin.php");
-            exit();
-        } else {
-            $error = "Invalid username or password.";
-        }
+        $error = "Invalid username or password.";
     }
 }
 
-$title = "Admin Login";
-$introduction = "Please log in with your admin credentials to manage the street food catalogue.";
+$title = "Login";
+$introduction = "Log in with your admin credentials to manage the Street Food catalogue.";
 
 include 'includes/header.php';
+
 ?>
 
-<h2 class="fw-light my-3 text-center">Login</h2>
+<h2 class="fw-light my-3">Admin Login</h2>
 
 <?php if ($error !== "") : ?>
-    <p class="text-center text-danger"><?= htmlspecialchars($error); ?></p>
+    <p class="text-danger text-center"><?= htmlspecialchars($error); ?></p>
 <?php endif; ?>
 
-<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" class="mx-auto" style="max-width: 480px;">
+<form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+
     <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
+        <label for="username" class="form-label">Username:</label>
         <input
             type="text"
             id="username"
             name="username"
             class="form-control"
-            value="<?= htmlspecialchars($_POST['username'] ?? ''); ?>"
+            value="<?= isset($username) ? htmlspecialchars($username) : '';?>"
             required
         >
     </div>
 
     <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label">Password:</label>
         <input
             type="password"
             id="password"
@@ -62,7 +63,7 @@ include 'includes/header.php';
         >
     </div>
 
-    <input type="submit" id="submit" name="submit" value="Log In" class="btn btn-success mt-3">
+    <input type="submit" id="submit" name="submit" value="Log In" class="btn btn-success my-3">
 </form>
 
 <?php include 'includes/footer.php'; ?>
