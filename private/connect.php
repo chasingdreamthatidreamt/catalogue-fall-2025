@@ -2,7 +2,6 @@
 
 function db_connect()
 {
-
     $db_host = 'mysql';
     $db_user = 'student';
     $db_pass = 'student';
