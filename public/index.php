@@ -2,7 +2,8 @@
 
 $title = "Catelogue";
 include 'includes/header.php';
-// include 'includes/filters.php';
+include 'includes/filters.php';
+include 'includes/footer.php';
 ?>
 
 <main class="container">
@@ -14,4 +15,3 @@ include 'includes/header.php';
     </section>
 
 </main>
-<?php include 'includes/footer.php'; ?>
