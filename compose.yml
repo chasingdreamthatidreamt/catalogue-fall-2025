@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    image: php:8.4-apache
+    container_name: php-web
     ports:
       - "8080:80"
     volumes:
@@ -15,6 +15,7 @@ services:
 
   mysql:
     image: mysql:8.0
+    container_name: mysql-db
     ports:
       - "3306:3306"
     environment:
@@ -23,10 +24,12 @@ services:
       MYSQL_USER: student
       MYSQL_PASSWORD: student
     volumes:
+      - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: my-phpmyadmin
     ports:
       - "8081:80"
     environment:
@@ -34,5 +37,6 @@ services:
       MYSQL_ROOT_PASSWORD: studentpass
     depends_on:
       - mysql
+
 volumes:
-  db_data: {}   
+  db_data:
