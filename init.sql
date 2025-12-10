@@ -48,3 +48,82 @@ INSERT INTO catalogue_items (image, title, country, description, region, foodTyp
 ('ceviche.jpg', 'Ceviche', 'Peru', 'A refreshing dish made from fresh raw fish cured in citrus juices, typically mixed with onions, cilantro, and chili peppers.', 'South America', 'Seafood', '$$', 'Hot', 'Raw Fish, Citrus Juice, Onions', 'Cured', 4.6),
 ('bratwurst.jpg', 'Bratwurst', 'Germany', 'A type of German sausage made from pork, beef, or veal, often grilled or pan-fried and served with mustard and sauerkraut.', 'Europe', 'Sausage', '$$', 'Mild', 'Pork/Beef/Veal, Spices', 'Grilled/Fried', 4.5),
 ('churros.jpg', 'Churros', 'Spain', 'A fried-dough pastry, typically sprinkled with sugar and sometimes cinnamon, often served with a side of thick hot chocolate for dipping.', 'Europe', 'Dessert', '$', 'Mild', 'Flour, Sugar, Oil', 'Fried', 4.7);
+
+CREATE TABLE IF NOT EXISTS catalogue_filters (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    filter_type VARCHAR(100) NOT NULL,
+    filter_value VARCHAR(100) NOT NULL
+);
+
+INSERT INTO catalogue_filters (filter_type, filter_value) VALUES
+('Country', 'Japan'),
+('Country', 'Mexico'),
+('Country', 'Italy'),
+('Country', 'India'),
+('Country', 'Spain'),
+('Country', 'Canada'),
+('Country', 'Turkey'),
+('Country', 'Korea'),
+('Country', 'France'),
+('Country', 'Brazil'),
+('Country', 'China'),
+('Country', 'USA'),
+('Country', 'Middle East'),
+('Country', 'UK'),
+('Region', 'East Asia'),
+('Region', 'North America'),
+('Region', 'Europe'),
+('Region', 'South Asia'),
+('Region', 'South America'),
+('Region', 'Middle East'),
+('Food Type', 'Seafood'),
+('Food Type', 'Street Food'),
+('Food Type', 'Main Course'),
+('Food Type', 'Spicy Dish'),
+('Food Type', 'Rice Dish'),
+('Food Type', 'Comfort Food'),
+('Food Type', 'Dessert'),
+('Food Type', 'Side Dish'),
+('Food Type', 'Pastry'),
+('Food Type', 'Stew'),
+('Food Type', 'Snack'),
+('Food Type', 'Grilled Meat'),
+('Price Range', '$'),
+('Price Range', '$$'),
+('Price Range', '$$$'),
+('Spice Level', 'Mild'),
+('Spice Level', 'Medium'),
+('Spice Level', 'Hot');
+
+CREATE TABLE IF NOT EXISTS catalogue_reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id INT NOT NULL,
+    reviewer_name VARCHAR(100) NOT NULL,
+    review_text TEXT NOT NULL,
+    rating DECIMAL(2,1) NOT NULL,
+    review_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES catalogue_items(id) ON DELETE CASCADE
+);
+
+INSERT INTO catalogue_reviews (item_id, reviewer_name, review_text, rating) VALUES
+(1, 'Alice', 'The sushi was incredibly fresh and flavorful. A must-try for sushi lovers!', 5.0),
+(2, 'Bob', 'Tacos were delicious with a perfect balance of spices. Will order again.', 4.5),
+(3, 'Charlie', 'Authentic Italian pasta with a rich sauce. Highly recommend!', 4.8),
+(4, 'Diana', 'The curry had a great depth of flavor and just the right amount of heat.', 4.6),
+(5, 'Ethan', 'Paella was packed with seafood and perfectly cooked rice. Loved it!', 4.7);
+
+CREATE TABLE IF NOT EXISTS catalogue_favorites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    item_id INT NOT NULL,
+    added_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES catalogue_items(id) ON DELETE CASCADE
+);
+INSERT INTO catalogue_favorites (user_id, item_id) VALUES
+(1, 1),
+(1, 3),
+(2, 2),
+(2, 4),
+(3, 5);
+
+
