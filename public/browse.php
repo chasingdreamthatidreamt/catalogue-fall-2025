@@ -8,7 +8,7 @@ $conn = db_connect();
 $title = "Browse Foods";
 include 'includes/header.php';
 
-$result = $conn->query("SELECT * FROM catalogue_items ORDER BY item_id DESC");
+$result = $conn->query("SELECT * FROM catalogue_items ORDER BY id DESC");
 ?>
 
 <main class="container my-5">
