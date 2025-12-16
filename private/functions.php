@@ -86,3 +86,28 @@ function process_upload_image(array $file, string $publicImagesDir): ?string
 
     return $filename;
 }
+function searchCatalogue(PDO $pdo, string $keyword = '', string $country = '', string $foodType = '', string $spiceLevel = '', string $priceRange = '', int $limit = 9, int $offset = 0): array
+{
+    $keyword = "%" . $keyword . "%";
+
+    $sql = "SELECT * FROM catalogue_items
+            WHERE (title LIKE ? OR description LIKE ? OR country LIKE ? OR mainIngredients LIKE ? OR cookingMethod LIKE ?)
+              AND (country = ? OR ? = '')
+              AND (foodType = ? OR ? = '')
+              AND (spiceLevel = ? OR ? = '')
+              AND (priceRange = ? OR ? = '')
+            ORDER BY id DESC
+            LIMIT ? OFFSET ?";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        $keyword, $keyword, $keyword, $keyword, $keyword,
+        $country, $country,
+        $foodType, $foodType,
+        $spiceLevel, $spiceLevel,
+        $priceRange, $priceRange,
+        $limit, $offset
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

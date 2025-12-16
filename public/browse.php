@@ -12,19 +12,65 @@ $introduction = "Browse street foods — click a card to see full details.";
 
 include __DIR__ . '/includes/header.php';
 
-/*
-Person 2: I’ve finished pagination and wired it to work automatically with
-any search/filter logic you add below.
 
-Build your WHERE clause, $types, and $params from $_GET here.
-Do NOT touch pagination or LIMIT/OFFSET — it already works.
-Clear filters = link back to browse.php with no query string.
-
-Once your logic is in, pagination will carry filters across pages.
-*/
 $whereSql = "";
 $types = "";
 $params = [];
+
+
+// Collect search + filter values from GET
+$search     = $_GET['search']     ?? '';
+$country    = $_GET['country']    ?? '';
+$foodType   = $_GET['foodType']   ?? '';
+$spiceLevel = $_GET['spiceLevel'] ?? '';
+$priceRange = $_GET['priceRange'] ?? '';
+
+// Clear filters
+if (isset($_GET['clear'])) {
+    $search = $country = $foodType = $spiceLevel = $priceRange = '';
+}
+
+// Build WHERE clause dynamically
+$whereParts = [];
+$types = '';
+$params = [];
+
+if ($search !== '') {
+    $whereParts[] = "(title LIKE ? OR description LIKE ? OR country LIKE ? OR mainIngredients LIKE ? OR cookingMethod LIKE ?)";
+    $types .= 'sssss';
+    $kw = "%$search%";
+    $params = array_merge($params, [$kw, $kw, $kw, $kw, $kw]);
+}
+
+if ($country !== '') {
+    $whereParts[] = "country = ?";
+    $types .= 's';
+    $params[] = $country;
+}
+
+if ($foodType !== '') {
+    $whereParts[] = "foodType = ?";
+    $types .= 's';
+    $params[] = $foodType;
+}
+
+if ($spiceLevel !== '') {
+    $whereParts[] = "spiceLevel = ?";
+    $types .= 's';
+    $params[] = $spiceLevel;
+}
+
+if ($priceRange !== '') {
+    $whereParts[] = "priceRange = ?";
+    $types .= 's';
+    $params[] = $priceRange;
+}
+
+// Combine into WHERE SQL
+$whereSql = '';
+if (!empty($whereParts)) {
+    $whereSql = 'WHERE ' . implode(' AND ', $whereParts);
+}
 
 $perPage = 9;
 $page = isset($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
@@ -77,6 +123,57 @@ function build_page_url(int $p): string
     }
 </style>
 
+<form method="get" class="mb-4">
+  <div class="row g-2 align-items-end">
+    <div class="col-md-2">
+      <input type="text" name="search" class="form-control" placeholder="Search street food..."
+             value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+    </div>
+
+    <div class="col-md-2">
+      <select name="country" class="form-select">
+        <option value="">All Countries</option>
+        <option value="India" <?= ($_GET['country'] ?? '') === 'India' ? 'selected' : '' ?>>India</option>
+        <option value="Mexico" <?= ($_GET['country'] ?? '') === 'Mexico' ? 'selected' : '' ?>>Mexico</option>
+        <option value="Japan" <?= ($_GET['country'] ?? '') === 'Japan' ? 'selected' : '' ?>>Japan</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <select name="foodType" class="form-select">
+        <option value="">All Types</option>
+        <option value="Snack" <?= ($_GET['foodType'] ?? '') === 'Snack' ? 'selected' : '' ?>>Snack</option>
+        <option value="Dessert" <?= ($_GET['foodType'] ?? '') === 'Dessert' ? 'selected' : '' ?>>Dessert</option>
+        <option value="Main Course" <?= ($_GET['foodType'] ?? '') === 'Main Course' ? 'selected' : '' ?>>Main Course</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <select name="spiceLevel" class="form-select">
+        <option value="">Any Spice</option>
+        <option value="Mild" <?= ($_GET['spiceLevel'] ?? '') === 'Mild' ? 'selected' : '' ?>>Mild</option>
+        <option value="Medium" <?= ($_GET['spiceLevel'] ?? '') === 'Medium' ? 'selected' : '' ?>>Medium</option>
+        <option value="Hot" <?= ($_GET['spiceLevel'] ?? '') === 'Hot' ? 'selected' : '' ?>>Hot</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <select name="priceRange" class="form-select">
+        <option value="">Any Price</option>
+        <option value="$" <?= ($_GET['priceRange'] ?? '') === '$' ? 'selected' : '' ?>>$</option>
+        <option value="$$" <?= ($_GET['priceRange'] ?? '') === '$$' ? 'selected' : '' ?>>$$</option>
+        <option value="$$$" <?= ($_GET['priceRange'] ?? '') === '$$$' ? 'selected' : '' ?>>$$$</option>
+      </select>
+    </div>
+
+    <div class="col-md-2 d-flex gap-2">
+  <button type="submit" class="btn btn-primary">Search</button>
+  <a href="browse.php" class="btn btn-secondary">Clear Filters</a>
+</div>
+
+  </div>
+</form>
+
 <h2 class="mb-4">Browse Foods</h2>
 
 <?php if ($total === 0): ?>
@@ -84,9 +181,7 @@ function build_page_url(int $p): string
         No results found. Try clearing filters or searching something else.
     </div>
 
-    <!-- PERSON 1: If you build filters/search UI above, please include a clear button like:
-         <a href="browse.php" class="btn btn-outline-secondary">Clear</a>
-    -->
+   
 <?php else: ?>
 
     <div class="row">
