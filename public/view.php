@@ -45,7 +45,7 @@ function image_filename_only(?string $path): ?string
 </style>
 
 <p>
-    <a href="browse.php" class="btn btn-sm btn-outline-secondary mb-3">← Back to Browse</a>
+    <a href="browse.php" class="btn btn-sm btn-outline-secondary mb-3 " style="background-color: white;">← Back to Browse</a>
 </p>
 
 <?php if ($item): ?>
@@ -57,7 +57,7 @@ function image_filename_only(?string $path): ?string
     $fullSrc = $imgFile ? "images/fullsize/" . e($imgFile) : "images/no-image.png";
     ?>
 
-    <div class="row g-4">
+    <div class="row g-4 text-white">
         <div class="col-md-5">
             <!-- Consistent image size -->
             <div class="ratio ratio-4x3 rounded shadow-sm overflow-hidden bg-light">
@@ -67,7 +67,7 @@ function image_filename_only(?string $path): ?string
 
         <div class="col-md-7">
             <h2 class="text-danger"><?= e($item['title']); ?></h2>
-            <p class="text-muted mb-2"><strong>Country:</strong> <?= e($item['country']); ?></p>
+            <p class=" mb-2"><strong>Country:</strong> <?= e($item['country']); ?></p>
 
             <?php if (!empty($item['rating'])): ?>
                 <p class="mb-2"><strong>Rating:</strong> <?= e((string) $item['rating']); ?>/5</p>

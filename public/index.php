@@ -1,36 +1,48 @@
 <?php
-$title = "Sidewalk Cravings";
-$introduction = "A street-food world tour — find iconic local bites by country and style.";
 
 include __DIR__ . '/includes/header.php';
 ?>
 
-<section class="row my-5">
-    <div class="col-md-10 col-lg-8 col-xxl-6 mb-4 item-align-middle">
-        <h2 class="display-4 ">
-            Streetfood From <span class="d-block text-danger">Differeny Countries</span>
-        </h2>
+<main>
 
-        <p class="lead">
-            Welcome to a world tour through street food from around the globe, where food tells stories and celebrates
-            culture.
-            Street food is more than a meal sold on sidewalks — it reflects creativity, tradition, and everyday life.
-        </p>
+    <!-- Main Photo Section with Background Image -->
+    <section class="d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-xxl-6 hero-content">
 
-        <p>
-            Across the world, street food shows how simple food can be meaningful and bring people together as part of
-            daily life.
-            Finding street foods during your journey makes travel more memorable, because you’re tasting the place as
-            locals do.
-        </p>
+                    <h2 class="display-4 fw-semibold mb-4">
+                        Streetfood From
+                        <span class="d-block text-danger">Differeny Countries</span>
+                    </h2>
 
-        <p class="mb-4">
-            The goal of this site is to simplify the search for authentic local foods when visiting different regions.
-            We bring together trusted info on famous dishes and where to find them — all in one place.
-        </p>
+                    <p class="lead mb-4">
+                        Welcome to a world tour through street food from around the globe, where food tells stories and celebrates
+                        culture.
+                        Street food is more than a meal sold on sidewalks — it reflects creativity, tradition, and everyday life.
+                    </p>
 
-        <a class="btn btn-primary" href="browse.php">Start Browsing</a>
-    </div>
-</section>
+                    <p class="mb-3">
+                        Across the world, street food shows how simple food can be meaningful and bring people together as part of
+                        daily life.
+                        Finding street foods during your journey makes travel more memorable, because you’re tasting the place as
+                        locals do.
+                    </p>
+
+                    <p class="mb-5">
+                        The goal of this site is to simplify the search for authentic local foods when visiting different regions.
+                        We bring together trusted info on famous dishes and where to find them — all in one place.
+                    </p>
+
+                    <a class="btn btn-primary btn-lg px-4" href="browse.php">
+                        Start Browsing
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

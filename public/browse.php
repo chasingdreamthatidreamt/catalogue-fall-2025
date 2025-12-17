@@ -174,7 +174,7 @@ function build_page_url(int $p): string
   </div>
 </form>
 
-<h2 class="mb-4">Browse Foods</h2>
+<h2 class="mb-4" style="color: aliceblue;">Browse Foods</h2>
 
 <?php if ($total === 0): ?>
     <div class="alert alert-warning">

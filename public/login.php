@@ -28,7 +28,7 @@ $introduction = "Log in with your admin credentials to manage the Street Food ca
 include 'includes/header.php';
 ?>
 
-<div class="container mt-5">
+<div class="container mt-5 text-white">
     <div class="row justify-content-center">
         <div class="col-md-6">
 
